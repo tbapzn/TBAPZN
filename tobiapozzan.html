@@ -1,0 +1,1693 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tobia Pozzan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* ─── RESET & BASE ─────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --bg:      #0a0a0a;
+  --surface: #141414;
+  --card:    #1a1a1a;
+  --border:  #242424;
+  --mid:     #888;
+  --light:   #b8b8b8;
+  --white:   #f0f0f0;
+  --green:   #6dff5a;
+  --green2:  #3dd42c;
+  --sidebar: 68px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--light);
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  cursor: none;
+  overflow-x: hidden;
+}
+
+/* ─── CUSTOM CURSOR ────────────────────────────────── */
+#cursor {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: var(--green);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%,-50%);
+  transition: width .15s, height .15s, background .15s;
+  mix-blend-mode: difference;
+}
+#cursor.hover {
+  width: 36px; height: 36px;
+  background: rgba(109,255,90,0.18);
+  border: 1.5px solid var(--green);
+}
+
+/* ─── SIDEBAR NAV ──────────────────────────────────── */
+#sidebar {
+  position: fixed;
+  left: 0; top: 0;
+  width: var(--sidebar);
+  height: 100vh;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 0;
+  z-index: 100;
+  background: rgba(10,10,10,0.92);
+  backdrop-filter: blur(12px);
+}
+
+.sidebar-logo {
+  font-size: 11px;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: 0.15em;
+  writing-mode: vertical-rl;
+  text-transform: uppercase;
+  transform: rotate(180deg);
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-dot {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: all .25s;
+}
+
+.nav-dot::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--mid);
+  transition: all .25s;
+}
+
+.nav-dot:hover::before,
+.nav-dot.active::before {
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  width: 7px; height: 7px;
+}
+
+.nav-dot .nav-label {
+  position: absolute;
+  left: 38px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-6px);
+  transition: all .2s;
+}
+
+.nav-dot:hover .nav-label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.sidebar-social {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+
+.sidebar-social a {
+  color: var(--mid);
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  transition: color .2s;
+}
+.sidebar-social a:hover { color: var(--green); }
+
+/* ─── MAIN CONTENT ─────────────────────────────────── */
+main {
+  margin-left: var(--sidebar);
+}
+
+section {
+  min-height: 100vh;
+  padding: 0 60px 0 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+
+/* ─── SECTION LABEL ────────────────────────────────── */
+.sec-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sec-eyebrow::after {
+  content: '';
+  display: block;
+  width: 32px; height: 1px;
+  background: var(--green);
+}
+
+/* ═══════════════════════════════════════════════════
+   §1  HERO
+══════════════════════════════════════════════════ */
+#hero {
+  min-height: 100vh;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-top-text {
+  position: absolute;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  text-align: center;
+  pointer-events: none;
+}
+
+.hero-top-text p {
+  font-size: 7px;
+  font-weight: 600;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60"><rect width="60" height="60" fill="none"/><circle cx="1" cy="1" r="1" fill="%23ffffff08"/></svg>');
+}
+
+.hero-glow {
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(109,255,90,0.07) 0%, transparent 70%);
+  top: 50%; left: 40%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  padding: 0 60px 0 72px;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  align-items: center;
+  gap: 60px;
+}
+
+.hero-name {
+  font-size: clamp(72px, 10vw, 132px);
+  font-weight: 900;
+  line-height: 0.88;
+  color: var(--white);
+  letter-spacing: -0.04em;
+  margin-bottom: 28px;
+}
+.hero-name span {
+  display: block;
+  color: #2a2a2a;
+  -webkit-text-stroke: 1px #666666;
+}
+
+.hero-tagline {
+  font-size: 12.5px;
+  font-weight: 540;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--mid);
+  margin-bottom: 32px;
+}
+
+.hero-bio {
+  font-size: 15px;
+  font-weight: 320;
+  color: var(--light);
+  line-height: 1.75;
+  max-width: 480px;
+  margin-bottom: 44px;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--green);
+  color: #000;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 14px 28px;
+  border: none;
+  cursor: pointer;
+  transition: all .2s;
+}
+.btn-primary:hover {
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 13px 28px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all .2s;
+}
+.btn-ghost:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+/* Hero photo card */
+.hero-photo-card {
+  position: relative;
+  aspect-ratio: 3/4;
+  background: var(--card);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.hero-photo-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: grayscale(30%);
+  mix-blend-mode: luminosity;
+  opacity: 0.75;
+}
+
+.hero-photo-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--bg) 0%, transparent 50%);
+}
+
+.hero-stats {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  z-index: 2;
+  display: flex;
+  gap: 20px;
+}
+
+.hero-stat span {
+  display: block;
+  font-size: 22px;
+  font-weight: 900;
+  color: var(--green);
+  line-height: 1;
+}
+.hero-stat p {
+  font-size: 10px;
+  color: var(--mid);
+  letter-spacing: 0.08em;
+  margin-top: 3px;
+}
+
+.hero-scroll {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 2;
+}
+.hero-scroll span {
+  font-size: 13px;
+  letter-spacing: 0.33em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+.scroll-line {
+  width: 5px;
+  height: 60px;
+  background: linear-gradient(to bottom, var(--green), transparent);
+  animation: scrollPulse 2s ease infinite;
+}
+@keyframes scrollPulse {
+  0%,100% { opacity: 0.3; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.3); }
+}
+
+/* ═══════════════════════════════════════════════════
+   §2  SU DI ME
+══════════════════════════════════════════════════ */
+#about {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  margin-top: 10px;
+}
+
+.about-title {
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 28px;
+}
+.about-title em {
+  font-style: normal;
+  color: transparent;
+  -webkit-text-stroke: 1.3px #555454be;
+}
+
+.about-text {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--light);
+  line-height: 1.8;
+  margin-bottom: 36px;
+}
+
+.about-skills {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.skill-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.skill-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--white);
+}
+.skill-label span { color: var(--green); }
+.skill-track {
+  height: 2px;
+  background: var(--border);
+  position: relative;
+}
+.skill-fill {
+  position: absolute;
+  left: 0; top: 0;
+  height: 100%;
+  background: var(--green);
+}
+
+.about-interests {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.interest-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 18px;
+  transition: border-color .2s;
+}
+.interest-card:hover { border-color: var(--green); }
+.interest-card strong {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 4px;
+  letter-spacing: 0.04em;
+}
+.interest-card p {
+  font-size: 11px;
+  color: var(--mid);
+  font-weight: 300;
+}
+
+.about-cv-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--green);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-shadow: 0 0 5px #0cff699a, 
+               0 0 10px #0cff6967, 
+               0 0 20px #0cff6948, 
+               0 0 30px #0cff6957;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--green);
+  margin-top: 28px;
+  transition: opacity .2s;
+}
+.about-cv-link:hover { opacity: 0.7; }
+
+/* ═══════════════════════════════════════════════════
+   §3  SERVIZI
+══════════════════════════════════════════════════ */
+#services {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.services-intro {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 56px;
+}
+
+.services-title {
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.services-sub {
+  font-size: 13px;
+  font-weight: 300;
+  color: var(--mid);
+  max-width: 280px;
+  text-align: right;
+  line-height: 1.6;
+}
+
+/* ── SERVIZIO 1: SITO WEB ── */
+.service-block {
+  border: 1px solid var(--border);
+  margin-bottom: 2px;
+  overflow: hidden;
+  transition: border-color .3s;
+}
+.service-block:hover { border-color: var(--green); }
+
+.service-header {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  align-items: center;
+  gap: 28px;
+  padding: 32px 36px;
+  cursor: pointer;
+}
+
+.service-num {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--green);
+}
+
+.service-header-info { display: flex; flex-direction: column; gap: 6px; }
+
+.service-name {
+  font-size: clamp(20px, 2.5vw, 28px);
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: -0.02em;
+}
+
+.service-tagline {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--mid);
+  letter-spacing: 0.04em;
+}
+
+.service-toggle {
+  width: 36px; height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--mid);
+  font-size: 18px;
+  transition: all .25s;
+  flex-shrink: 0;
+}
+.service-block:hover .service-toggle {
+  border-color: var(--green);
+  color: var(--green);
+  transform: rotate(45deg);
+}
+
+/* Service body — espanso di default, si apre/chiude */
+.service-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-top: 1px solid var(--border);
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .5s cubic-bezier(0.16,1,0.3,1);
+}
+.service-block.open .service-body { max-height: 700px; }
+
+.service-desc {
+  padding: 36px;
+  border-right: 1px solid var(--border);
+}
+.service-desc p {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--light);
+  line-height: 1.75;
+  margin-bottom: 24px;
+}
+
+.service-features {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--light);
+}
+.feature-item::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+}
+
+.service-price {
+  font-size: 11px;
+  color: var(--mid);
+  letter-spacing: 0.1em;
+}
+.service-price strong {
+  color: var(--white);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.service-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  background: var(--green);
+  color: #000;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 12px 22px;
+  transition: all .2s;
+}
+.service-btn:hover { background: #fff; }
+
+.service-visual {
+  padding: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  min-height: 260px;
+  position: relative;
+}
+
+/* ──── Preview grafica per ogni servizio ──── */
+
+/* WEB: browser mockup */
+.preview-browser {
+  width: 100%;
+  max-width: 340px;
+  background: #111;
+  border: 1px solid #2a2a2a;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.browser-bar {
+  background: #1e1e1e;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #2a2a2a;
+}
+.browser-dots { display: flex; gap: 5px; }
+.browser-dots span {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #333;
+}
+.browser-url {
+  flex: 1;
+  background: #111;
+  border-radius: 3px;
+  padding: 3px 10px;
+  font-size: 10px;
+  color: #555;
+  letter-spacing: 0.04em;
+}
+.browser-content {
+  padding: 20px;
+  min-height: 180px;
+}
+.browser-hero-fake {
+  height: 60px;
+  background: linear-gradient(90deg, #6dff5a18 0%, transparent 100%);
+  border-left: 2px solid var(--green);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+}
+.browser-hero-fake span {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 0.1em;
+}
+.browser-line {
+  height: 6px;
+  background: #222;
+  border-radius: 2px;
+  margin-bottom: 6px;
+}
+.browser-line.short { width: 60%; }
+.browser-line.shorter { width: 40%; }
+
+/* PRENOTAZIONI: calendar mockup */
+.preview-calendar {
+  width: 100%;
+  max-width: 300px;
+}
+.cal-header {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 12px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1px;
+}
+.cal-month {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 0.08em;
+}
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+}
+.cal-cell {
+  background: var(--card);
+  padding: 8px 4px;
+  text-align: center;
+  font-size: 10px;
+  color: var(--mid);
+}
+.cal-cell.day-label {
+  background: var(--surface);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--mid);
+}
+.cal-cell.booked { background: rgba(109,255,90,0.12); color: var(--green); font-weight: 700; }
+.cal-cell.today { border: 1px solid var(--green); color: var(--white); }
+.cal-cell.empty { background: var(--bg); }
+
+/* CV: doc mockup */
+.preview-cv {
+  width: 100%;
+  max-width: 220px;
+  background: #f5f5f5;
+  padding: 16px;
+  transform: rotate(1deg);
+  box-shadow: 8px 8px 30px rgba(0,0,0,0.5);
+}
+.cv-mock-name {
+  font-size: 14px;
+  font-weight: 900;
+  color: #111;
+  margin-bottom: 3px;
+  letter-spacing: -0.02em;
+}
+.cv-mock-role {
+  font-size: 8px;
+  color: #666;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.cv-mock-line {
+  height: 1px;
+  background: #ddd;
+  margin-bottom: 8px;
+}
+.cv-mock-section {
+  font-size: 7px;
+  font-weight: 700;
+  color: #333;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.cv-mock-text {
+  height: 5px;
+  background: #e0e0e0;
+  border-radius: 2px;
+  margin-bottom: 3px;
+}
+.cv-mock-text.short { width: 65%; }
+.cv-mock-accent {
+  height: 5px;
+  background: linear-gradient(90deg, #6dff5a, #3dd42c);
+  border-radius: 2px;
+  margin-bottom: 3px;
+  width: 45%;
+}
+
+/* ═══════════════════════════════════════════════════
+   §4  PROGETTI
+══════════════════════════════════════════════════ */
+#projects {
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.projects-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 44px;
+}
+
+.projects-title {
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 4px;
+}
+.filter-tab {
+  padding: 8px 16px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  color: var(--mid);
+  background: transparent;
+  cursor: pointer;
+  transition: all .2s;
+}
+.filter-tab.active, .filter-tab:hover {
+  border-color: var(--green);
+  color: var(--green);
+  background: rgba(109,255,90,0.06);
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+}
+
+.project-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color .25s;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.project-card:hover { border-color: var(--green); }
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--green);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s;
+}
+.project-card:hover::before { transform: scaleX(1); }
+
+.project-tag {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 16px;
+}
+
+.project-name {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--white);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+
+.project-desc {
+  font-size: 12px;
+  font-weight: 300;
+  color: var(--mid);
+  line-height: 1.65;
+  flex: 1;
+  margin-bottom: 20px;
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tech-pill {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--mid);
+  border: 1px solid var(--border);
+  padding: 3px 8px;
+  border-radius: 2px;
+}
+
+.project-arrow {
+  position: absolute;
+  top: 24px; right: 24px;
+  color: var(--mid);
+  font-size: 16px;
+  transition: all .25s;
+}
+.project-card:hover .project-arrow {
+  color: var(--green);
+  transform: translate(3px,-3px);
+}
+
+/* ═══════════════════════════════════════════════════
+   §5  CONTATTI
+══════════════════════════════════════════════════ */
+#contact {
+  padding-top: 100px;
+  padding-bottom: 100px;
+  min-height: 100vh;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.contact-title {
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 20px;
+}
+.contact-title em {
+  font-style: normal;
+  color: var(--green);
+}
+
+.contact-sub {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--light);
+  line-height: 1.75;
+  margin-bottom: 44px;
+  max-width: 380px;
+}
+
+.contact-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  text-decoration: none;
+  transition: border-color .2s;
+  color: var(--light);
+}
+.contact-item:hover { border-color: var(--green); }
+
+.contact-item-icon {
+  font-size: 16px;
+  color: var(--green);
+  flex-shrink: 0;
+  width: 20px;
+}
+.contact-item-info { display: flex; flex-direction: column; gap: 2px; }
+.contact-item-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+.contact-item-value {
+  font-size: 13px;
+  color: var(--white);
+}
+
+/* Form */
+.contact-form { display: flex; flex-direction: column; gap: 14px; }
+
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mid);
+}
+.form-input,
+.form-textarea {
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 300;
+  padding: 14px 18px;
+  outline: none;
+  transition: border-color .2s;
+  resize: none;
+}
+.form-input:focus,
+.form-textarea:focus { border-color: var(--green); }
+.form-textarea { min-height: 130px; }
+
+.form-submit {
+  background: var(--green);
+  color: #000;
+  border: none;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  padding: 16px 32px;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background .2s;
+}
+.form-submit:hover { background: #fff; }
+
+/* ─── FOOTER ───────────────────────────────────────── */
+footer {
+  margin-left: var(--sidebar);
+  padding: 28px 72px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+footer p {
+  font-size: 10px;
+  color: var(--mid);
+  letter-spacing: 0.08em;
+}
+footer span { color: var(--green); }
+
+/* ─── RESPONSIVO BASE ──────────────────────────────── */
+@media (max-width: 900px) {
+  :root { --sidebar: 0px; }
+  #sidebar { display: none; }
+  section, .hero-inner { padding-left: 24px; padding-right: 24px; }
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-photo-card { display: none; }
+  .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .service-body { grid-template-columns: 1fr; }
+  footer { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor"></div>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-logo">Tobia Pozzan</div>
+
+  <div class="sidebar-nav">
+    <div class="nav-dot active" data-target="hero">
+      <span class="nav-label">Home</span>
+    </div>
+    <div class="nav-dot" data-target="about">
+      <span class="nav-label">About</span>
+    </div>
+    <div class="nav-dot" data-target="services">
+      <span class="nav-label">Servizi</span>
+    </div>
+    <div class="nav-dot" data-target="projects">
+      <span class="nav-label">Progetti</span>
+    </div>
+    <div class="nav-dot" data-target="contact">
+      <span class="nav-label">Contatti</span>
+    </div>
+  </div>
+
+  <div class="sidebar-social">
+    <a href="mailto:tobiapozzan@gmail.com">Mail</a>
+    <a href="https://behance.net/tobiapozzan" target="_blank">Behance</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ═══════ §1 HERO ═══════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-top-text">
+    <p>Nulla è uno sbaglio, finché non smetti di vederlo come un passo verso nuovi orizzonti, più lontano da dove hai iniziato.</p>
+  </div>
+  
+  <div class="hero-inner">
+    <div>
+      <p class="hero-tagline">Explorer · Creator · Problem Solver</p>
+      <h1 class="hero-name">
+        TOBIA
+        <span>POZZAN</span>
+      </h1>
+      <p class="hero-bio">
+        Allineato, curioso tra tecnologia, finanza e design, con una forte passione per la cucina. Costruisco esperienze per i tuoi clienti e trovo soluzioni per i tuoi problemi. 
+        <div>
+        <a href="#services" class="btn-primary">Vedi i servizi →</a>
+        <a href="#projects" class="btn-ghost">Progetti</a>
+      </div>
+    </div>
+    <div class="hero-photo-card">
+   <!-- Corretto: usa 'src' al posto di 'href' -->
+   <img src="C:\Users\tobia\Desktop\IMG_7665.png" alt="Tobia Pozzan" onerror="this.style.display='none'; this.parentElement.style.background='#181818'">
+
+   <div class="hero-stats">
+        <div class="hero-stat">
+          <span>5+</span>
+          <p>Anni di studio</p>
+        </div>
+        <div class="hero-stat">
+          <span>4</span>
+          <p>Aree chiave</p>
+        </div>
+        <div class="hero-stat">
+          <span>∞</span>
+          <p>Curiosità</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════ §2 SU DI ME ═══════ -->
+<section id="about">
+  <div class="sec-eyebrow">Su di me</div>
+
+  <div class="about-grid">
+    <div>
+      <h2 class="about-title">
+        Chi sono<br><em>davvero.</em>
+      </h2>
+      <p class="about-text">
+       Mente formata nei campi informativi, tecnologici e informatici, sempre in cerca di nuovi stimoli. Unisco logica e creatività per trasformare idee in progetti concreti, che sia un sito, un bot che ti aiuti o un sistema automatizzato.
+      <p class="about-text">
+        Non mi interessa fare le cose per farle: mi interessa farle bene, con attenzione al dettaglio e un occhio sempre sulla qualità finale.
+      </p>
+
+      <div class="about-skills">
+        <div class="skill-row">
+          <div class="skill-label">Sviluppo Web <span>HTML · Python · SQL</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:82%"></div></div>
+        </div>
+        <div class="skill-row">
+        <div class="skill-label">Conoscenza delle lingue <span>Italiano ⬤ · Inglese ◑· Tedesco ◔</span></div>
+        <div class="skill-track"><div class="skill-fill" style="width:66%"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label">Analisi Finanziaria <span>Crypto · Trading</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:69%"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label">Design & AI <span>Grafica · Strumenti AI</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:74%"></div></div>
+        </div>
+        <div class="skill-row">
+          <div class="skill-label">Formazione <span>ITIS Chilesotti · ITET Pasini</span></div>
+          <div class="skill-track"><div class="skill-fill" style="width:77%"></div></div>
+        </div>
+      </div>
+
+      <a href="cv.html" class="about-cv-link">Scarica il CV completo ↗</a>
+    </div>
+
+    <div>
+      <div class="about-interests">
+        <div class="interest-card">
+          <strong>INFORMATICA</strong>
+          <p>Passione, Problem Solving, Creatività per costruire e innovare. Unita all'esperienza personale e lo studio scolastico.</p>
+        </div>
+        <div class="interest-card">
+          <strong>ECONOMIA</strong>
+          <p>Pattern, Dinamicità, Psicologia del mercato sono cose che mi hanno sempre appassionato. Sviluppando progetti, anche grazie alla scuola.</p>
+        </div>
+        <div class="interest-card">
+          <strong>CUCINA</strong>
+          <p>Estetica, sperimentazione, attenzione al dettaglio. Una delle mie passioni predilette, amo trovare combinazioni e solzuioni anche in questo.</p>
+        </div>
+        <div class="interest-card">
+          <strong>VIAGGI</strong>
+          <p>Luoghi, idee, culture, esperienze, e anime nuove. Sono alla continua ricerca e volontà di apprendere quotidianamente qualcosa di nuovo.</p>
+        </div>
+        <div class="interest-card">
+          <strong>AI</strong>
+          <p>Utilizzo sistemi automatizzati, migliorati e sviluppati da me. Per assicurarmi di dare la miglior risposta e soluzione che viene richiesta in quel determinato momento.</p>
+        </div>
+        <div class="interest-card">
+          <strong>AUTONOMIA</strong>
+          <p>L'Obbiettivo.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ §3 SERVIZI ═══════ -->
+<section id="services">
+  <div class="sec-eyebrow">Servizi</div>
+
+  <div class="services-intro">
+    <h2 class="services-title">Cosa posso<br>fare per te.</h2>
+    <p class="services-sub">Tre servizi principali. Ognuno pensato per dare risultati concreti, funzionali e professionali.</p>
+  </div>
+
+  <!-- SERVIZIO 1: SITO WEB -->
+  <div class="service-block open">
+    <div class="service-header" onclick="toggleService(this.parentElement)">
+      <span class="service-num">01</span>
+      <div class="service-header-info">
+        <h3 class="service-name">Sito Web Professionale</h3>
+        <p class="service-tagline">Design su misura · Performance · Identità digitale</p>
+      </div>
+      <div class="service-toggle">+</div>
+    </div>
+    <div class="service-body">
+      <div class="service-desc">
+        <p>
+          Un sito che non sembra uguale a tutti gli altri. Costruisco esperienze web su misura: dal portfolio personale all'e-commerce, dall'azienda al progetto creativo. Ogni sito ha una sua personalità visiva unica.
+        </p>
+        <div class="service-features">
+          <div class="feature-item">Design custom, zero template</div>
+          <div class="feature-item">Testo copiabile, link funzionali, SEO ready</div>
+          <div class="feature-item">Responsive per mobile e desktop</div>
+          <div class="feature-item">Consegna in file HTML autonomo</div>
+          <div class="feature-item">Possibilità di integrazione con domini</div>
+        </div>
+        <div class="service-price">
+          A partire da <strong>€ 150</strong> · Progetto chiavi in mano
+        </div>
+        <a href="#contact" class="service-btn">Richiedi preventivo →</a>
+      </div>
+      <div class="service-visual">
+        <div class="preview-browser">
+          <div class="browser-bar">
+            <div class="browser-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <div class="browser-url">tobiapozzan.it</div>
+          </div>
+          <div class="browser-content">
+            <div class="browser-hero-fake">
+              <span>TOBIA POZZAN</span>
+            </div>
+            <div class="browser-line" style="width:70%"></div>
+            <div class="browser-line short"></div>
+            <div class="browser-line shorter"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVIZIO 2: PRENOTAZIONI -->
+  <div class="service-block">
+    <div class="service-header" onclick="toggleService(this.parentElement)">
+      <span class="service-num">02</span>
+      <div class="service-header-info">
+        <h3 class="service-name">Sistema Prenotazioni</h3>
+        <p class="service-tagline">Automatizza il tuo business · Gestione clienti · Zero chaos</p>
+      </div>
+      <div class="service-toggle">+</div>
+    </div>
+    <div class="service-body">
+      <div class="service-desc">
+        <p>
+          Hai un'attività e gestisci ancora i clienti su WhatsApp? Ti costruisco un sistema di prenotazioni automatizzato, con pannello admin, notifiche e pagina pubblica per i tuoi clienti.
+        </p>
+        <div class="service-features">
+          <div class="feature-item">Pagina pubblica per i clienti</div>
+          <div class="feature-item">Pannello admin per gestire slot</div>
+          <div class="feature-item">Notifiche via Telegram o Email</div>
+          <div class="feature-item">Personalizzabile per qualsiasi settore</div>
+          <div class="feature-item">Installazione e supporto inclusi</div>
+        </div>
+        <div class="service-price">
+          A partire da <strong>€ 200</strong> · Setup completo
+        </div>
+        <a href="#contact" class="service-btn">Richiedi preventivo →</a>
+      </div>
+      <div class="service-visual">
+        <div class="preview-calendar">
+          <div class="cal-header">
+            <span class="cal-month">Luglio 2026</span>
+            <span style="font-size:10px; color:var(--mid)">◀ ▶</span>
+          </div>
+          <div class="cal-grid">
+            <div class="cal-cell day-label">Lun</div>
+            <div class="cal-cell day-label">Mar</div>
+            <div class="cal-cell day-label">Mer</div>
+            <div class="cal-cell day-label">Gio</div>
+            <div class="cal-cell day-label">Ven</div>
+            <div class="cal-cell day-label">Sab</div>
+            <div class="cal-cell day-label">Dom</div>
+            <div class="cal-cell">1</div>
+            <div class="cal-cell booked">2</div>
+            <div class="cal-cell">3</div>
+            <div class="cal-cell today">4</div>
+            <div class="cal-cell">5</div>
+            <div class="cal-cell">6</div>
+            <div class="cal-cell">7</div>
+            <div class="cal-cell booked">8</div>
+            <div class="cal-cell">9</div>
+            <div class="cal-cell booked">10</div>
+            <div class="cal-cell">11</div>
+            <div class="cal-cell booked">12</div>
+            <div class="cal-cell">13</div>
+            <div class="cal-cell">14</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SERVIZIO 3: CV -->
+  <div class="service-block">
+    <div class="service-header" onclick="toggleService(this.parentElement)">
+      <span class="service-num">03</span>
+      <div class="service-header-info">
+        <h3 class="service-name">CV Professionale</h3>
+        <p class="service-tagline">Due versioni · Creativo + ATS · Pronto a stampare</p>
+      </div>
+      <div class="service-toggle">+</div>
+    </div>
+    <div class="service-body">
+      <div class="service-desc">
+        <p>
+          Non un template Word. Un vero CV con identità visiva — disponibile in versione creativa (per stupire) e versione professionale pulita (per i recruiter). Con testo copiabile, link attivi e foto integrata.
+        </p>
+        <div class="service-features">
+          <div class="feature-item">Versione dark creativa + versione bianca ATS</div>
+          <div class="feature-item">Foto tua integrata con overlay professionale</div>
+          <div class="feature-item">Testo copiabile, tel/email cliccabili</div>
+          <div class="feature-item">Consegna in HTML + PDF stampabile</div>
+          <div class="feature-item">Modificabile facilmente in autonomia</div>
+        </div>
+        <div class="service-price">
+          A partire da <strong>€ 50</strong> · Consegna in 48h
+        </div>
+        <a href="#contact" class="service-btn">Richiedi preventivo →</a>
+      </div>
+      <div class="service-visual">
+        <div class="preview-cv">
+          <div class="cv-mock-name">Mario Rossi</div>
+          <div class="cv-mock-role">Senior Developer · Milano</div>
+          <div class="cv-mock-line"></div>
+          <div class="cv-mock-section">Profilo</div>
+          <div class="cv-mock-text"></div>
+          <div class="cv-mock-text short"></div>
+          <div style="height:8px"></div>
+          <div class="cv-mock-section">Competenze</div>
+          <div class="cv-mock-accent"></div>
+          <div class="cv-mock-text shorter"></div>
+          <div style="height:8px"></div>
+          <div class="cv-mock-section">Esperienza</div>
+          <div class="cv-mock-text"></div>
+          <div class="cv-mock-text short"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ §4 PROGETTI ═══════ -->
+<section id="projects">
+  <div class="sec-eyebrow">Progetti</div>
+
+  <div class="projects-header">
+    <h2 class="projects-title">Cosa ho<br>Costruito</h2>
+    <div class="filter-tabs">
+      <button class="filter-tab active" onclick="filterProjects('all', this)">Tutti</button>
+      <button class="filter-tab" onclick="filterProjects('web', this)">Web</button>
+      <button class="filter-tab" onclick="filterProjects('finance', this)">Economia e Finanza</button>
+      <button class="filter-tab" onclick="filterProjects('design', this)">Servizi</button>
+    </div>
+  </div>
+
+  <div class="projects-grid" id="projectsGrid">
+
+    <div class="project-card" data-cat="design">
+      <span class="project-arrow">↗</span>
+      <span class="project-tag">Web · SERVIZI</span>
+      <h3 class="project-name">Sistema Prenotazioni</h3>
+      <p class="project-desc">Piattaforma di booking per imprese locali con controllo admin, notifiche Telegram e pagina cliente. Progettato per parrucchieri, estetiste, freelance.</p>
+      <div class="project-tech">
+        <span class="tech-pill">Node.js</span>
+        <span class="tech-pill">HTML/CSS</span>
+        <span class="tech-pill">Telegram </span>
+      </div>
+    </div>
+
+    <div class="project-card" data-cat="finance">
+      <span class="project-arrow">↗</span>
+      <span class="project-tag">Finance · AI</span>
+      <h3 class="project-name">Trading Bot Crypto</h3>
+      <p class="project-desc">Sistema automatizzato di analisi mercati su Crypto e MemeCoin. Pipeline AI con LLM locale, dual storage SQLite e interfaccia web per un controllo ottimizzato.</p>
+      <div class="project-tech">
+        <span class="tech-pill">Python</span>
+        <span class="tech-pill">Telegram API</span>
+        <span class="tech-pill">Ollama</span>
+        <span class="tech-pill">SQLite</span>
+      </div>
+    </div>
+
+    <div class="project-card" data-cat="design">
+      <span class="project-arrow">↗</span>
+      <span class="project-tag">CURRICULUM · SERVIZI</span>
+      <h3 class="project-name">Creazione Dual CV personale e professionale</h3>
+      <p class="project-desc">CV in due versioni, personale, forte e accattivante, e versione ATS elegante e professionale. Testo copiabile, link cliccabili, toggle tra le due versioni.</p>
+      <div class="project-tech">
+        <span class="tech-pill">HTML/CSS</span>
+        <span class="tech-pill">GitHub</span>
+        <span class="tech-pill">JavaScript</span>
+      </div>
+    </div>
+
+    <div class="project-card" data-cat="design">
+      <span class="project-arrow">↗</span>
+      <span class="project-tag">Diario · SERVIZI</span>
+      <h3 class="project-name"> Self Tracker</h3>
+      <p class="project-desc">Dashboard personale per il self tracking: emozioni, abitudini, contatori, promemoria e spese. Collegato a Google Email, bot Telegram, per rettifiche e consigli di una AI. </p>
+      <div class="project-tech">
+        <span class="tech-pill">Python</span>
+        <span class="tech-pill">JSON</span>
+        <span class="tech-pill">AI</span>
+        <span class="tech-pill">Google Drive API</span>
+      </div>
+    </div>
+
+    <div class="project-card" data-cat="web">
+      <span class="project-arrow">↗</span>
+      <span class="project-tag"> Siti 2.0 · WEB</span>
+      <h3 class="project-name">Sito web per Eventi</h3>
+      <p class="project-desc">Sito con Orari, Informazioni, Contatti. Desing funzionale, forte e dinamico.
+        Posizioni aggiornate, anonimi e sicuri, con sistema di prenotazioni integrato.
+      </p>
+      <div class="project-tech">
+        <span class="tech-pill">HTML/CSS</span>
+        <span class="tech-pill">DataBase</span>
+        <span class="tech-pill">Design</span>
+      </div>
+    </div>
+
+    <div class="project-card" data-cat="design">
+      <span class="project-arrow">↗</span>
+      <span class="project-tag">Sito web · Servizi</span>
+      <h3 class="project-name">Questo Sito</h3>
+      <p class="project-desc">Portfolio personale con i propri recapiti, progetti, idee. Fai capire chi sei e cosa puoi offrire. Fai capire velocemente quanto puoi dare. Fallo ora.</p>
+      <div class="project-tech">
+        <span class="tech-pill">HTML/CSS/JS</span>
+        <span class="tech-pill">Inter Font</span>
+        <span class="tech-pill">Vanilla</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════ §5 CONTATTI ═══════ -->
+<section id="contact">
+  <div class="sec-eyebrow">Contatti</div>
+
+  <div class="contact-grid">
+    <div>
+      <h2 class="contact-title">Parliamo<br>di <em>te.</em></h2>
+      <p class="contact-sub">
+        Hai un'idea, un progetto, o vuoi semplicemente capire cosa posso fare per te. Scrivimi — rispondo entro 24 ore.
+      </p>
+
+      <div class="contact-items">
+        <a href="mailto:tobiapozzan@gmail.com" class="contact-item">
+          <span class="contact-item-icon">✉</span>
+          <div class="contact-item-info">
+            <span class="contact-item-label">Email</span>
+            <span class="contact-item-value">tobiapozzan@gmail.com</span>
+          </div>
+        </a>
+        <a href="tel:+393703380070" class="contact-item">
+          <span class="contact-item-icon">☏</span>
+          <div class="contact-item-info">
+            <span class="contact-item-label">Telefono</span>
+            <span class="contact-item-value">+39 370 338 0070</span>
+          </div>
+        </a>
+        <div class="contact-item">
+          <span class="contact-item-icon">⊙</span>
+          <div class="contact-item-info">
+            <span class="contact-item-label">Posizione</span>
+            <span class="contact-item-value">Vicenza, Italia</span>
+          </div>
+        </div>
+        <a href="https://behance.net/tobiapozzan" target="_blank" class="contact-item">
+          <span class="contact-item-icon">◈</span>
+          <div class="contact-item-info">
+            <span class="contact-item-label">Portfolio</span>
+            <span class="contact-item-value">behance.net/tobiapozzan</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <form class="contact-form" onsubmit="handleForm(event)">
+      <div class="form-group">
+        <label class="form-label">Il tuo nome</label>
+        <input type="text" class="form-input" placeholder="Mario Rossi" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email</label>
+        <input type="email" class="form-input" placeholder="mario@esempio.it" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Di cosa hai bisogno?</label>
+        <select class="form-input" style="appearance:none; -webkit-appearance:none;">
+          <option value="">Seleziona un servizio</option>
+          <option>Sito Web</option>
+          <option>Sistema Prenotazioni</option>
+          <option>CV Professionale</option>
+          <option>Altro</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Messaggio</label>
+        <textarea class="form-textarea" placeholder="Dimmi di più sul tuo progetto..." required></textarea>
+      </div>
+      <button type="submit" class="form-submit">Invia messaggio →</button>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>© 2026 Tobia Pozzan — Vicenza, Italia</p>
+  <p>Fatto con <span>♥</span> e troppo caffè</p>
+</footer>
+
+<script>
+/* ─── CURSOR ─── */
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top  = e.clientY + 'px';
+});
+document.querySelectorAll('a, button, .project-card, .service-header, .nav-dot').forEach(el => {
+  el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+  el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+});
+
+/* ─── SIDEBAR ACTIVE on SCROLL ─── */
+const sections = document.querySelectorAll('section[id]');
+const dots = document.querySelectorAll('.nav-dot');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      dots.forEach(d => d.classList.remove('active'));
+      const target = document.querySelector(`.nav-dot[data-target="${entry.target.id}"]`);
+      if (target) target.classList.add('active');
+    }
+  });
+}, { threshold: 0.4 });
+
+sections.forEach(s => observer.observe(s));
+
+/* ─── DOT CLICK ─── */
+dots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    const target = document.getElementById(dot.dataset.target);
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+/* ─── SERVICE TOGGLE ─── */
+function toggleService(block) {
+  block.classList.toggle('open');
+}
+
+/* ─── PROJECT FILTER ─── */
+function filterProjects(cat, btn) {
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+
+  document.querySelectorAll('.project-card').forEach(card => {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+/* ─── FORM ─── */
+function handleForm(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  btn.textContent = 'Inviato ✓';
+  btn.style.background = '#fff';
+  setTimeout(() => {
+    btn.textContent = 'Invia messaggio →';
+    btn.style.background = '';
+    e.target.reset();
+  }, 3000);
+}
+</script>
+</body>
+</html>

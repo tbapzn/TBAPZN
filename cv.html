@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:#111; --card:rgba(22,22,22,0.9); --border:#353131;
+  --mid:#999999; --light:#dbdbdb; --white:#eeeeee; --green:#1d990d;
+}
+@page { size: A4; margin: 0; }
+body {
+  min-height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family:'Inter','Helvetica Neue',sans-serif;
+  font-size:7.8pt; line-height:1.5; color:var(--light);
+  background: #111;
+}
+.page {
+  width:210mm; height:297mm;
+  background-image: url('IMG_7665.png');
+  background-size: 135% auto; /* Modifica: 150%, 170%, 190%, 200% per zoom */
+  background-position: 16.5% center; /* Modifica: 20% center (sx), 50% center (centro), 70% center (dx) */
+  background-repeat: no-repeat;
+  background-attachment: scroll; /* 'fixed' per parallax effect, 'scroll' per comportamento normale */
+  position: relative;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.35);
+  overflow: hidden;
+}
+.overlay {
+  /* GUIDA RAPIDA PER MODIFICARE LO SFONDO */
+  /* 
+    1. ZOOM (background-size):
+       150% auto  → Mostra più area, zoom minore
+       170% auto  → Valore attuale (equilibrato)
+       190% auto  → Zoom più forte
+       210% auto  → Zoom massimo
+  
+    2. POSIZIONE ORIZZONTALE (primo valore background-position):
+       10% center → Sposta MOLTO a sinistra
+       25% center → A sinistra
+       35% center → Valore attuale (posizione naturale)
+       50% center → CENTRO PERFETTO
+       70% center → A destra
+       90% center → Molto a DESTRA
+  
+    3. POSIZIONE VERTICALE (secondo valore background-position):
+       top    → Allinea l'immagine in alto
+       center → Valore attuale (verticalmente centrato)
+       bottom → Allinea in basso
+  
+    4. EFFETTO PARALLAX (background-attachment):
+       scroll → Valore attuale (sfondo si muove con la pagina)
+       fixed  → Lo sfondo rimane fisso, crea effetto parallax
+  */
+  position:absolute; inset:0;
+  background: linear-gradient(to right,
+    rgba(8, 8, 8, 0.644) 0%,
+    rgba(8, 8, 8, 0.568) 50%,
+    rgba(8,8,8,0.82) 100%
+  );
+}
+
+.content {
+  position:absolute; inset:0;
+  display:grid;
+  grid-template-columns: 68mm 42mm minmax(90mm, 1fr);
+  grid-template-rows: 46mm 1fr;
+}
+.header-name {
+  grid-column: 1;
+  grid-row: 1;
+  padding:14px 12px 8px 16px;
+  display:flex; flex-direction:column; justify-content:flex-end;
+}
+.name-main {
+  font-size:42pt; font-weight:900; color:#eee;
+  letter-spacing:-0.03em; line-height:0.88; text-transform:uppercase;
+}
+.name-last { color:#bbb; font-weight:800; }
+.tagline {
+  font-size:5.8pt; font-weight:500; color:var(--mid);
+  letter-spacing:0.22em; text-transform:uppercase; margin-top:6px;
+}
+/* TOP RIGHT */
+.header-profile {
+  grid-column: 3;
+  grid-row: 1;
+  padding:16px 16px 8px 8px;
+  margin-left:3;
+  width: 70%;
+}
+.sec-title {
+  font-size:8.5pt; font-weight:700; color:var(--white);
+  letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px;
+}
+.green-bar { width:20px; height:2px; background:var(--green); margin-bottom:7px; }
+.profile-text { font-size:7.8pt; color:var(--light); line-height:1.65; font-weight:300; }
+/* COLUMNS */
+.col-left {
+  grid-column: 1;
+  grid-row: 2;
+  padding:8px 10px 10px 16px;
+  display:flex; flex-direction:column; gap:8px;
+  overflow:hidden;
+}
+.col-right {
+  grid-column: 3;
+  grid-row: 2;
+  padding:8px 20px 10px 8px;
+  display:flex; flex-direction:column; gap:10px;
+  overflow:hidden;
+  margin-left:0;
+  width: 100%;
+  max-width: 112mm;
+}
+/* CARD */
+.card {
+  background:var(--card); border:1px solid var(--border);
+  border-radius:5px; padding:9px 10px;
+}
+/* DNA */
+.dna-stat { display:flex; align-items:baseline; gap:5px; margin-bottom:3px; }
+.dna-num { font-size:16pt; font-weight:900; color:var(--green); line-height:1; }
+.dna-lbl { font-size:7pt; color:var(--light); font-weight:300; line-height:1.3; }
+.dna-passion { font-size:7.5pt; font-weight:700; color:var(--green); text-transform:uppercase; letter-spacing:0.06em; margin:5px 0 1px; }
+.dna-bio { font-size:7pt; color:#666; font-weight:300; line-height:1.55; margin-top:4px; }
+/* PORTFOLIO */
+.port-row { display:flex; align-items:center; gap:8px; }
+.be-box {
+  background:#1769ff; border-radius:3px;
+  width:24px; height:24px;
+  font-size:10pt; font-weight:900; color:white;
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.port-title { font-size:8.5pt; font-weight:700; color:var(--white); }
+.port-sub { font-size:7pt; color:var(--mid); }
+.port-url { font-size:6.5pt; color:#417ddd; margin-top:3px; display:block; }
+/* SKILLS */
+.skills-2col { display:grid; grid-template-columns:1fr 1fr; gap:0 8px; }
+.sk-title { font-size:7pt; font-weight:700; margin-bottom:4px; }
+.sk-soft { color:var(--white); }
+.sk-hard { color:var(--green); }
+.sk-list { list-style:none; }
+.sk-list li {
+  font-size:7pt; color:var(--light); padding:1px 0 1px 8px; position:relative;
+}
+.sk-list li::before { content:'•'; position:absolute; left:0; color:#444; }
+/* LINGUE */
+.lang-row {
+  display:grid; grid-template-columns:18mm 1fr auto;
+  align-items:center; gap:5px; margin-bottom:4px;
+}
+.lang-nm { font-size:7pt; font-weight:600; color:var(--white); letter-spacing:0.05em; }
+.lang-bg { height:2.5px; background:var(--border); border-radius:2px; overflow:hidden; }
+.lang-fill { height:100%; background:var(--green); }
+.lang-lv { font-size:6pt; color:var(--mid); white-space:nowrap; }
+/* INTERESSI */
+.int-row { display:flex; gap:6px; margin-bottom:5px; align-items:flex-start; }
+.int-ic { font-size:10pt; line-height:1.2; width:14px; text-align:center; flex-shrink:0; }
+.int-nm { font-size:7pt; font-weight:600; color:var(--white); }
+.int-ds { font-size:6.5pt; color:var(--mid); font-weight:300; }
+/* EDU */
+.edu-item { display:flex; gap:7px; margin-bottom:7px; align-items:flex-start; }
+.edu-dot { width:7px; height:7px; border-radius:50%; background:var(--green); margin-top:2px; flex-shrink:0; }
+.edu-school { font-size:8pt; font-weight:700; color:var(--white); letter-spacing:0.04em; }
+.edu-desc { font-size:7pt; color:var(--mid); font-weight:300; }
+/* EXP */
+.exp-block { margin-bottom:7px; }
+.exp-hdr { display:flex; gap:7px; align-items:center; margin-bottom:3px; }
+.exp-ic {
+  width:20px; height:20px; border-radius:50%; background:#222;
+  border:1px solid var(--border);
+  font-size:8pt; display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.exp-title { font-size:7.5pt; font-weight:700; color:var(--green); letter-spacing:0.05em; text-transform:uppercase; }
+.exp-desc { font-size:7pt; color:var(--light); font-weight:300; margin-bottom:2px; padding-left:27px; }
+.exp-list { list-style:none; padding-left:27px; }
+.exp-list li {
+  font-size:7pt; color:#b8b8b8; padding:1px 0 1px 8px; position:relative;
+}
+.exp-list li::before { content:'•'; position:absolute; left:0; color:var(--green); }
+/* VISION */
+.vision-txt { font-size:7.5pt; color:var(--light); font-weight:300; line-height:1.6; }
+/* CONTACT */
+.contact-item { display:flex; align-items:center; gap:7px; font-size:7.8pt; color:var(--light); margin-bottom:4px; }
+.contact-item a { color:var(--light); text-decoration:none; }
+.power-switch {
+  --color-invert: #ffffff;
+  --width: 150px;    
+  --height: 150px;
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--width);
+  height: var(--height);
+}
+.power-switch input {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  cursor: pointer;
+  opacity: 0;
+}
+.power-switch .button {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+.power-switch .button::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: radial-gradient(circle closest-side, var(--color-invert), transparent);
+  filter: blur(20px);
+  opacity: 0;
+  transition: opacity 1s ease, transform 1s ease;
+  transform: perspective(1px) translateZ(0);
+  backface-visibility: hidden;
+}
+.power-switch .power-on,
+.power-switch .power-off {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  fill: none;
+  stroke: var(--color-invert);
+  stroke-width: 8px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.power-switch .power-on .line {
+  opacity: 0;
+  transition: opacity .3s ease 1s;
+}
+.power-switch .power-on .circle {
+  opacity: 1;
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+  transition: transform 0s ease, stroke-dashoffset 1s ease 0s;
+  transform: rotate(-58deg);
+  transform-origin: center 80px;
+}
+.power-switch .power-off .line {
+  opacity: .2;
+}
+.power-switch .power-off .circle {
+  opacity: .2;
+  transform: rotate(-58deg);
+  transform-origin: center 80px;
+  stroke-dasharray: 220;
+  stroke-dashoffset: 40;
+}
+.power-switch input:checked + .button::after {
+  opacity: 0.15;
+  transform: scale(2) perspective(1px) translateZ(0);
+  backface-visibility: hidden;
+  transition: opacity .5s ease, transform .5s ease;
+}
+.power-switch input:checked + .button .power-on,
+.power-switch input:checked + .button .power-off {
+  animation: click-animation .3s ease forwards;
+  transform: scale(1);
+}
+.power-switch input:checked + .button .power-on .line {
+  animation: line-animation .8s ease-in forwards;
+}
+.power-switch input:checked + .button .power-on .circle {
+  transform: rotate(302deg);
+}
+.power-switch input:checked + .button .power-off .circle {
+  transform: rotate(302deg);
+}
+.power-switch input:checked + .button .power-on {
+  .line {
+    opacity: 1;
+    transition: opacity .05s ease-in .55s;
+  }
+  .circle {
+    transform: rotate(302deg);
+    stroke-dashoffset: 40;
+    transition: transform .4s ease .2s, stroke-dashoffset .4s ease .2s;
+  }
+}
+@keyframes line-animation {
+  0% {
+    transform: translateY(0);
+  }
+  10% {
+    transform: translateY(10px);
+  }
+  40% {
+    transform: translateY(-25px);
+  }
+  60% {
+    transform: translateY(-25px);
+  }
+  85% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+@keyframes click-animation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="overlay"></div>
+  <div class="content">
+
+    <!-- TOP LEFT -->
+    <div class="header-name">
+      <div class="name-main">TOBIA<br><span class="name-last">POZZAN</span></div>
+      <div class="tagline">Explorer. Creator. Problem Solver.</div>
+    </div>
+
+    <!-- TOP RIGHT -->
+    <div class="header-profile">
+      <div class="sec-title">Profile</div>
+      <div class="green-bar"></div>
+      <p class="profile-text">
+        Interesse trasversale tra informatica,cucina, finanza, creatività ed esplorazione personale.
+        Attratto dall'idea di costruire competenze attraverso esperienze pratiche, viaggi,
+        sperimentazione e ricerca continua di nuove prospettive.
+      </p>
+    </div>
+
+    <!-- LEFT COL -->
+    <div class="col-left">
+      <div class="card">
+        <div class="sec-title" style="margin-bottom:6px">Creative DNA</div>
+        <div class="dna-stat"><span class="dna-num">6+</span><span class="dna-lbl">anni di studio<br>e pratica autonoma</span></div>
+        <div class="dna-stat"><span class="dna-num">4</span><span class="dna-lbl">aree di interesse principali</span></div>
+        <div class="dna-passion">Passione</div>
+        <div style="font-size:7pt;color:var(--light);font-weight:300">per creare, esplorare e comprendere.</div>
+        <div class="dna-bio">Amo unire logica e creatività per sviluppare idee, risolvere problemi e trasformare concetti in progetti concreti. Curioso, determinato e sempre alla ricerca di qualcosa di nuovo.</div>
+      </div>
+
+      <div class="card">
+        <div class="port-row">
+          <div class="be-box">DB</div>
+          <div>
+            <div class="port-title">DropBox</div>
+            <div class="port-sub">My Project →</div>
+          </div>
+        </div>
+        <a href="https://www.dropbox.com/scl/fo/35k1w05w2qyatjrcysilb/AHXJUJx09QREOdKy6zGEDFU?rlkey=09xxpt2ih8sfsy8obluyoobpe&st=yoan9c73&dl=0" class="port-url">Visualizza </a>
+      </div>
+
+      <div class="card">
+        <div class="sec-title" style="margin-bottom:6px">Skills</div>
+        <div class="skills-2col">
+          <div>
+            <div class="sk-title sk-soft">Soft Skills</div>
+            <ul class="sk-list">
+              <li>Team Work</li><li>Problem Solving</li><li>Pensiero Critico</li>
+              <li>Adattabilità</li><li>Time Management</li><li>Intelligenza Emotiva</li>
+              <li>Creatività</li><li>Leadership</li>
+            </ul>
+          </div>
+          <div>
+            <div class="sk-title sk-hard">Hard Skills</div>
+            <ul class="sk-list">
+              <li>HTML</li><li>Python</li><li>SQL</li><li>C++</li>
+              <li>Intelligenza Artificiale</li><li>Cyber Security</li>
+              <li>Grafica &amp; Design</li><li>Economia e Finanza</li>
+              <li>Analisi di Mercato</li><li>Negoziazione</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="sec-title" style="margin-bottom:6px">Lingue</div>
+        <div class="lang-row">
+          <span class="lang-nm">Italiano</span>
+          <div class="lang-bg"><div class="lang-fill" style="width:100%"></div></div>
+          <span class="lang-lv">Madrelingua</span>
+        </div>
+        <div class="lang-row">
+          <span class="lang-nm">Inglese</span>
+          <div class="lang-bg"><div class="lang-fill" style="width:60%"></div></div>
+          <span class="lang-lv">Intermedio</span>
+        </div>
+        <div class="lang-row">
+          <span class="lang-nm">Tedesco</span>
+          <div class="lang-bg"><div class="lang-fill" style="width:25%"></div></div>
+          <span class="lang-lv">Base</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="sec-title" style="margin-bottom:6px">Interessi</div>
+        <div class="int-row"><span class="int-ic">◈</span><div><div class="int-nm">Cucina &amp; Impiattamento</div><div class="int-ds">Sperimentare, creare e stupire</div></div></div>
+        <div class="int-row"><span class="int-ic">◈</span><div><div class="int-nm">Viaggi &amp; Scoperta</div><div class="int-ds">Conoscere luoghi, culture e nuove prospettive</div></div></div>
+        <div class="int-row"><span class="int-ic">◈</span><div><div class="int-nm">Tecnologia</div><div class="int-ds">Costruire, risolvere, innovare</div></div></div>
+        <div class="int-row"><span class="int-ic">◈</span><div><div class="int-nm">Economia &amp; Mercati</div><div class="int-ds">Comprendere dinamiche, analizzare e crescere</div></div></div>
+      </div>
+    </div>
+
+    <!-- RIGHT COL -->
+    <div class="col-right">
+      <div>
+        <div class="sec-title">Education</div>
+        <div class="green-bar"></div>
+        <div class="edu-item">
+          <div class="edu-dot"></div>
+          <div><div class="edu-school">ITIS Chilesotti</div><div class="edu-desc">Competenze informatiche e linguistiche</div></div>
+        </div>
+        <div class="edu-item">
+          <div class="edu-dot"></div>
+          <div><div class="edu-school">ITET Pasini</div><div class="edu-desc">Competenze economiche e linguistiche</div></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sec-title">Experience &amp; Personal Development</div>
+        <div class="green-bar"></div>
+        <div class="exp-block">
+          <div class="exp-hdr"><div class="exp-ic">~</div><div class="exp-title">Mercati e Analisi</div></div>
+          <div class="exp-desc">Esperienza pratica nello studio e nell'utilizzo di:</div>
+          <ul class="exp-list"><li>Trading</li><li>Scalping</li><li>Analisi mercato crypto</li></ul>
+        </div>
+        <div class="exp-block">
+          <div class="exp-hdr"><div class="exp-ic" style="font-size:7pt">&lt;/&gt;</div><div class="exp-title">Tecnologia e Creazione</div></div>
+          <div class="exp-desc">Esperienza autonoma in:</div>
+          <ul class="exp-list"><li>Sviluppo web e siti</li><li>Programmazione</li><li>Grafica e design</li><li>Utilizzo strumenti AI</li><li>Sperimentazione digitale</li></ul>
+        </div>
+        <div class="exp-block">
+          <div class="exp-hdr"><div class="exp-ic">#</div><div class="exp-title">Esperienza Pratica</div></div>
+          <div class="exp-desc">Gestione reale di capitali personali, studio del rischio e crescita attraverso l'esperienza diretta.</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sec-title">Vision</div>
+        <div class="green-bar"></div>
+        <p class="vision-txt">Continuare ad ampliare competenze ed esperienze mantenendo apertura verso settori, luoghi e idee differenti, unendo creatività, esplorazione e costruzione personale.</p>
+      </div>
+
+      <div class="card">
+        <div class="sec-title" style="margin-bottom:7px;color:var(--green)">Contact</div>
+        <div class="contact-item"><span>☏</span><a href="tel:+393703380070">+39 3703380070</a></div>
+        <div class="contact-item"><span>✉</span><a href="mailto:tobiapozzan@gmail.com">tobiapozzan@gmail.com</a></div>
+        <div class="contact-item"><span>⊙</span><span>Vicenza, Italia</span></div>
+      </div>
+    </div>
+
+  </div>
+  <label class="power-switch">
+    <input type="checkbox" />
+    <div class="button">
+      <svg class="power-off">
+        <use xlink:href="#line" class="line" />
+        <use xlink:href="#circle" class="circle" />
+      </svg>
+      <svg class="power-on">
+        <use xlink:href="#line" class="line" />
+        <use xlink:href="#circle" class="circle" />
+      </svg>
+    </div>
+  </label>
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" id="line">
+      <line x1="75" y1="34" x2="75" y2="58"/>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" id="circle">
+      <circle cx="75" cy="80" r="35"/>
+    </symbol>
+  </svg>
+</div>
+<script>
+  document.querySelector('.power-switch input').addEventListener('change', function() {
+    if (this.checked) {
+      setTimeout(() => {
+        window.location.href = 'layout2.html';
+      }, 1200);
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Tobia Pozzan - CV</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap');
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink:      #1a1a1a;
+  --gray:     #555555;
+  --lgray:    #888888;
+  --line:     #b83838;
+  --accent:   #1a1a1a;
+}
+
+@page { size: A4; margin: 18mm 20mm; }
+
+body {
+  font-family: 'Source Sans 3', Arial, Helvetica, sans-serif;
+  color: var(--ink);
+  font-size: 10.5pt;
+  line-height: 1.5;
+  width: 210mm;
+  max-width: 210mm;
+  margin: 0 auto;
+  background: #ffffff;
+  padding: 18mm 20mm;
+}
+
+/* ── HEADER ── */
+header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  border-bottom: 2.5px solid var(--ink);
+  padding-bottom: 12px;
+  margin-bottom: 18px;
+}
+
+.header-info {
+  flex: 1;
+}
+
+.profile-box {
+  flex: 0 0 118px;
+}
+
+.profile-picture {
+  width: 118px;
+  height: 118px;
+    background-image: url('IMG_7665.png');
+    background-size: 150%;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 50%;
+}
+
+
+h1 {
+  font-size: 26pt;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 3px;
+}
+
+.role {
+  font-size: 11pt;
+  font-weight: 600;
+  color: var(--gray);
+  margin-bottom: 10px;
+}
+
+.contact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 16px;
+  font-size: 9.5pt;
+  color: var(--gray);
+}
+
+.contact-row a {
+  color: var(--gray);
+  text-decoration: none;
+}
+
+.contact-row a:hover {
+  text-decoration: underline;
+}
+
+/* ── SECTIONS ── */
+section {
+  margin-bottom: 16px;
+}
+
+h2 {
+  font-size: 10.5pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  margin-bottom: 8px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--line);
+}
+
+p.summary {
+  font-size: 10pt;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+/* ── EDUCATION ── */
+.edu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.edu-item:last-child { margin-bottom: 0; }
+
+.edu-main {
+  font-size: 10pt;
+}
+
+.edu-school {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.edu-desc {
+  color: var(--gray);
+  font-size: 9.5pt;
+}
+
+/* ── EXPERIENCE / PROJECTS ── */
+.exp-item {
+  margin-bottom: 10px;
+}
+
+.exp-item:last-child { margin-bottom: 0; }
+
+.exp-title {
+  font-size: 10pt;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+
+.exp-list {
+  list-style: none;
+  margin-top: 3px;
+}
+
+.exp-list li {
+  font-size: 9.5pt;
+  color: var(--gray);
+  padding-left: 12px;
+  position: relative;
+  margin-bottom: 2px;
+}
+
+.exp-list li::before {
+  content: '–';
+  position: absolute;
+  left: 0;
+  color: var(--lgray);
+}
+
+/* ── SKILLS ── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 24px;
+}
+
+.skill-cat {
+  font-size: 9.5pt;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.skill-tags {
+  font-size: 9.5pt;
+  color: var(--gray);
+  line-height: 1.6;
+}
+
+/* ── LANGUAGES ── */
+.lang-row {
+  display: flex;
+  gap: 20px;
+  font-size: 10pt;
+}
+
+.lang-item {
+  display: flex;
+  gap: 5px;
+}
+
+.lang-name { font-weight: 600; color: var(--ink); }
+.lang-level { color: var(--gray); }
+
+/* ── INTERESTS ── */
+.interests-text {
+  font-size: 9.5pt;
+  color: var(--gray);
+}
+
+/* ── PRINT ── */
+@media print {
+  body { padding: 0; }
+}
+
+/* ── POWER SWITCH BUTTON (cambia layout) ── */
+.power-switch {
+  --color-invert: #000000;
+  --width: 120px;
+  --height: 120px;
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--width);
+  height: var(--height);
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 50%;
+  box-shadow: 0 16px 30px rgba(255, 14, 14, 0.233);
+}
+.power-switch input {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 2;
+  cursor: pointer;
+  opacity: 0;
+}
+.power-switch .button {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 50%;
+}
+.power-switch .button::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: radial-gradient(circle closest-side, rgba(0, 0, 0, 0.18), transparent);
+  filter: blur(20px);
+  opacity: 0;
+  transition: opacity 1s ease, transform 1s ease;
+  transform: perspective(1px) translateZ(0);
+  backface-visibility: hidden;
+}
+.power-switch .power-on,
+.power-switch .power-off {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 1;
+  fill: none;
+  stroke: var(--color-invert);
+  stroke-width: 8px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.power-switch svg {
+  width: 80%;
+  height: 80%;
+}
+.power-switch .power-on .line {
+  opacity: 0;
+  transition: opacity .3s ease 1s;
+}
+.power-switch .power-on .circle {
+  opacity: 1;
+  stroke-dasharray: 220;
+  stroke-dashoffset: 220;
+  transition: transform 0s ease, stroke-dashoffset 1s ease 0s;
+  transform: rotate(-58deg);
+  transform-origin: center 65px;
+}
+.power-switch .power-off .line {
+  opacity: .2;
+}
+.power-switch .power-off .circle {
+  opacity: .2;
+  transform: rotate(-58deg);
+  transform-origin: center 65px;
+  stroke-dasharray: 220;
+  stroke-dashoffset: 40;
+}
+.power-switch input:checked + .button::after {
+  opacity: 0.15;
+  transform: scale(2) perspective(1px) translateZ(0);
+  backface-visibility: hidden;
+  transition: opacity .5s ease, transform .5s ease;
+}
+.power-switch input:checked + .button .power-on,
+.power-switch input:checked + .button .power-off {
+  animation: click-animation .3s ease forwards;
+  transform: scale(1);
+}
+.power-switch input:checked + .button .power-on .line {
+  animation: line-animation .8s ease-in forwards;
+}
+.power-switch input:checked + .button .power-on .circle {
+  transform: rotate(302deg);
+}
+.power-switch input:checked + .button .power-off .circle {
+  transform: rotate(302deg);
+}
+.power-switch input:checked + .button .power-on {
+  .line {
+    opacity: 1;
+    transition: opacity .05s ease-in .55s;
+  }
+  .circle {
+    transform: rotate(302deg);
+    stroke-dashoffset: 40;
+    transition: transform .4s ease .2s, stroke-dashoffset .4s ease .2s;
+  }
+}
+@keyframes line-animation {
+  0% { transform: translateY(0); }
+  10% { transform: translateY(10px); }
+  40% { transform: translateY(-25px); }
+  60% { transform: translateY(-25px); }
+  85% { transform: translateY(10px); }
+  100% { transform: translateY(0px); }
+}
+@keyframes click-animation {
+  0% { transform: scale(1); }
+  50% { transform: scale(.9); }
+  100% { transform: scale(1); }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="profile-box">
+    <div class="profile-picture"></div>
+  </div>
+  <div class="header-info">
+    <h1>Tobia Pozzan</h1>
+    <p class="role">Studente IT &amp; Economia — Vicenza, Italia</p>
+    <div class="contact-row">
+      <span>📞 <a href="tel:+393703380070">+39 370 338 0070</a></span>
+      <span>✉ <a href="mailto:tobiapozzan@gmail.com">tobiapozzan@gmail.com</a></span>
+      <span>📍 Vicenza, Italia</span>
+      <span>🔗 <a href="cv.html" class="port-url">CURRICULUM</a></a></span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <h2>Profilo</h2>
+  <p class="summary">
+    Diplomato in informatica, con esperienza pratica maturata attraverso progetti autonomi in sviluppo web,
+     programmazione e analisi di mercato. Mi distinguo per curiosità, capacità di apprendimento e attitudine al problem solving.
+      Cerco un’opportunità che mi permetta di crescere e dimostrare il mio potenziale: 
+      apprendo rapidamente e mi impegno a trasformare ogni occasione in risultati concreti.
+  </p>
+</section>
+
+<section>
+  <h2>Formazione</h2>
+  <div class="edu-item">
+    <div class="edu-main">
+      <span class="edu-school">ITIS Chilesotti</span> —
+      <span class="edu-desc">Indirizzo Informatica, competenze tecniche e linguistiche</span>
+    </div>
+  </div>
+  <div class="edu-item">
+    <div class="edu-main">
+      <span class="edu-school">ITET Pasini</span> —
+      <span class="edu-desc">Competenze economiche e linguistiche</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Esperienza &amp; Progetti</h2>
+
+  <div class="exp-item">
+    <div class="exp-title">Sviluppo Web &amp; Programmazione</div>
+    <ul class="exp-list">
+      <li>Progettazione e sviluppo autonomo di siti e applicazioni web</li>
+      <li>Utilizzo di strumenti di intelligenza artificiale per ottimizzare workflow di sviluppo</li>
+      <li>Sperimentazione con linguaggi di programmazione e basi di dati</li>
+    </ul>
+  </div>
+
+  <div class="exp-item">
+    <div class="exp-title">Analisi Finanziaria &amp; Mercati</div>
+    <ul class="exp-list">
+      <li>Studio pratico e gestione autonoma di capitale personale su mercati finanziari</li>
+      <li>Analisi tecnica e fondamentale, gestione del rischio</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <h2>Competenze</h2>
+  <div class="skills-grid">
+    <div>
+      <div class="skill-cat">Tecniche</div>
+      <div class="skill-tags">HTML, Python, SQL, C++, Cyber Security, Grafica &amp; Design</div>
+    </div>
+    <div>
+      <div class="skill-cat">Trasversali</div>
+      <div class="skill-tags">Problem Solving, Pensiero Critico, Adattabilità, Team Work, Leadership</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Lingue</h2>
+  <div class="lang-row">
+    <div class="lang-item"><span class="lang-name">Italiano</span><span class="lang-level">— Madrelingua</span></div>
+    <div class="lang-item"><span class="lang-name">Inglese</span><span class="lang-level">— Intermedio (B1)</span></div>
+    <div class="lang-item"><span class="lang-name">Tedesco</span><span class="lang-level">— Base (A1)</span></div>
+  </div>
+</section>
+
+<section>
+  <h2>Interessi</h2>
+  <p class="interests-text">
+    Tecnologia e innovazione, economia e mercati finanziari, viaggi, cucina e impiattamento.
+  </p>
+</section>
+
+<label class="power-switch">
+  <input type="checkbox" />
+  <div class="button">
+    <svg class="power-off">
+      <use xlink:href="#line" class="line" />
+      <use xlink:href="#circle" class="circle" />
+    </svg>
+    <svg class="power-on">
+      <use xlink:href="#line" class="line" />
+      <use xlink:href="#circle" class="circle" />
+    </svg>
+  </div>
+</label>
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" id="line">
+    <line x1="75" y1="34" x2="75" y2="58"/>
+  </symbol>
+  <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" id="circle">
+    <circle cx="75" cy="80" r="35"/>
+  </symbol>
+</svg>
+<script>
+  document.querySelector('.power-switch input').addEventListener('change', function() {
+    if (this.checked) {
+      setTimeout(() => {
+        window.location.href = 'cv.html';
+      }, 1200);
+    }
+  });
+</script>
+</body>
+</html>
